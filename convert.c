@@ -1,12 +1,29 @@
 #include <stdio.h>
 
-const char *BASE_62_LOOKUP = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+#include <string.h>
+
+const char *BASE_62_LOOKUP = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+void reverse(char s[]) {
+  int length, c, i, j;
+  length =  strlen(s);
+  for (i = 0, j = length - 1; i < j; i++, j--) {
+    c = s[i];
+    s[i] = s[j];
+    s[j] = c;
+  }
+}
 
 void printBase62(unsigned long number, FILE *stream) {
+  char str[12];
+  int index = 0;
   do {
-    fputc(BASE_62_LOOKUP[number % 62], stream);
+    str[index++] = BASE_62_LOOKUP[number % 62];
     number = number / 62;
   } while (number > 0);
+  str[index]='\0';
+  reverse(str);
+  fputs(str,stream);
 }
 
 void printCompositeId(FILE *stream, unsigned long parentId, unsigned long userId, unsigned long collectionId) {
