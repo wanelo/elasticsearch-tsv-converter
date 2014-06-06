@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include <string.h>
 
 const char *BASE_62_LOOKUP = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
