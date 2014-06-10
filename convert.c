@@ -33,15 +33,15 @@ void printIndex(char *indexName, char *typeName, unsigned long parentId, unsigne
   fprintf(stdout, "\",\"_parent\":\"%lu\"}}\n", parentId);
 }
 
-void printData(unsigned long userId, unsigned long collectionId, unsigned long timeStamp, unsigned long timeStampMilliseconds){
-  fprintf(stdout, "{\"user_id\":\"%lu\",\"collection_id\":\"%lu\",\"created_at\":\"%lu%03lu\"}\n", userId, collectionId, timeStamp, timeStampMilliseconds);
+void printData(unsigned long userId, unsigned long collectionId, unsigned long timeStamp){
+  fprintf(stdout, "{\"user_id\":\"%lu\",\"collection_id\":\"%lu\",\"created_at\":\"%lu\"}\n", userId, collectionId, timeStamp);
 }
 
 void handleLine(char *indexName, char *typeName, char *line){
-  unsigned long parentId, userId, collectionId, timeStamp, timeStampMilliseconds;
-  if (sscanf(line, "%lu %lu %lu %lu.%lu", &parentId, &userId, &collectionId, &timeStamp, &timeStampMilliseconds) == 5){
+  unsigned long parentId, userId, collectionId, timeStamp;
+  if (sscanf(line, "%lu %lu %lu %lu", &parentId, &userId, &collectionId, &timeStamp) == 4){
     printIndex(indexName, typeName, parentId, userId, collectionId);
-    printData(userId, collectionId, timeStamp, timeStampMilliseconds);
+    printData(userId, collectionId, timeStamp);
   }
 }
 
