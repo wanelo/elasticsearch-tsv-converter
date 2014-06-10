@@ -10,6 +10,7 @@ SAMPLE_SPLIT_DIRECTORY=$5
 HOST=localhost:9200
 
 function splitSample() {
+  mkdir -p $3
   split -a 10 -l $1 $2 $3/part-
 }
 
