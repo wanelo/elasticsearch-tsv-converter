@@ -4,7 +4,8 @@
 const char *BASE_62_LOOKUP = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 void printReverse(char *string, int length, FILE *stream) {
-  for (int index = length; index > 0; index--) {
+  int index;
+  for (index = length; index > 0; index--) {
     fputc(string[index - 1], stream);
   }
 }
