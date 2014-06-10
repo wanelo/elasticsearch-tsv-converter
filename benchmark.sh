@@ -1,6 +1,7 @@
 #!/bin/bash
 
-GENERATOR=./generate
+CONVERTER=./elasticsearch-tsv-converter
+GENERATOR=./generate-raw-data
 SAMPLE_PATH=`cd $(dirname $0) && pwd`/benchmark
 SAMPLE_SIZE=$1
 HOST=localhost:9200
@@ -52,7 +53,7 @@ function splitSample() {
 function convertAndUpload() {
   for file in $SAMPLE_PATH/sample/part-*
   do
-    cat $file | ./convert $INDEX $TYPE | time curl -o /dev/null -s -XPOST $HOST/_bulk --data-binary @-
+    cat $file | $CONVERTER $INDEX $TYPE | time curl -o /dev/null -s -XPOST $HOST/_bulk --data-binary @-
   done
   curl -s -o /dev/null -XPUT $HOST/$INDEX/_settings -d'{
     "index" : {

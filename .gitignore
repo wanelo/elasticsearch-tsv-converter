@@ -22,5 +22,7 @@
 *.x86_64
 *.hex
 convert
+elasticsearch-tsv-converter
 generate
 benchmark/
+generate-fake-data

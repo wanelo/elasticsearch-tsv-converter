@@ -1,14 +1,24 @@
-all:
-	gcc convert.c -o convert
-	gcc generate.c -o generate
+CONVERTER_NAME = elasticsearch-tsv-converter
+GENERATOR_NAME = generate-raw-data
+PROGRAMS = $(CONVERTER_NAME) $(GENERATOR_NAME)
 
-test: all
+all: clean test
+
+converter:
+	gcc convert.c -o $(CONVERTER_NAME)
+
+generator:
+	gcc generate.c -o $(GENERATOR_NAME)
+
+install: converter
+	cp $(CONVERTER_NAME) /opt/local/bin
+
+test: converter
 	./test.sh
 
-benchmark: test
+benchmark: test generator
 	time ./benchmark.sh 10000
 
 clean:
-	rm convert
-	rm generate
+	rm -f $(PROGRAMS)
 	rm -rf benchmark/

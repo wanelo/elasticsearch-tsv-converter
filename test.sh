@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROGRAM=./convert
+CONVERT=./elasticsearch-tsv-converter
 
 function assert_equal() {
   if [[ "$1" != "$2" ]]
@@ -12,7 +12,7 @@ function assert_equal() {
 }
 
 function test() {
-  local actual=`cat test.tsv | $PROGRAM wat taco`
+  local actual=`cat test.tsv | $CONVERT wat taco`
   read -r -d '' expected <<EOF
 {"index":{"_index":"wat","_type":"taco","_id":"2-3-4","_parent":"2"}}
 {"user_id":"3","collection_id":"4","created_at":"1401887869000"}
