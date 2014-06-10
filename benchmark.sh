@@ -50,6 +50,6 @@ function cleanup () {
 
 reset
 makeSample $SAMPLE_SIZE $SAMPLE_PATH/sample.tsv
-./upload.sh $INDEX $TYPE $SAMPLE_SIZE $SAMPLE_PATH/sample.tsv $SAMPLE_PATH/sample
+PATH="$PATH:." ./upload.sh $INDEX $TYPE $SAMPLE_SIZE $SAMPLE_PATH/sample.tsv $SAMPLE_PATH/sample
 cleanup
 echo "       ----------         ---------         --------"

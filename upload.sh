@@ -1,7 +1,6 @@
 #!/bin/bash
 
-CONVERTER=./elasticsearch-tsv-converter
-TYPE=taco
+CONVERTER=`which elasticsearch-tsv-converter`
 
 INDEX=$1
 TYPE=$2
