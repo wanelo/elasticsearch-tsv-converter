@@ -15,8 +15,14 @@ if [ -z "$SAMPLE_SIZE" ]; then
 fi
 
 function reset() {
-  curl -s -o /dev/null -XDELETE $HOST/$INDEX
+  rm -rf $SAMPLE_PATH/sample
+  mkdir -p $SAMPLE_PATH/sample
   curl -s -o /dev/null -XPUT $HOST/$INDEX -d"{
+    settings : {
+      index : {
+        refresh_interval : -1
+      }
+    },
     mappings : {
       $PARENT: {},
       $TYPE: {
@@ -30,41 +36,20 @@ function reset() {
       }
     }
   }"
-  curl -s -o /dev/null -XPUT $HOST/$INDEX/_settings -d'{
-    "index" : {
-      "refresh_interval" : -1
-    }
-  }'
 }
 
 function makeSample() {
-  local TOTAL_SIZE=$(($SAMPLE_SIZE * 10))
-  mkdir -p $SAMPLE_PATH
+  local TOTAL_SIZE=$(($1 * 10))
   echo "Generating $TOTAL_SIZE entries"
-  $GENERATOR $TOTAL_SIZE > $SAMPLE_PATH/sample.tsv
+  $GENERATOR $TOTAL_SIZE > $2
 }
 
-function splitSample() {
-  rm -rf $SAMPLE_PATH/sample
-  mkdir -p $SAMPLE_PATH/sample
-  split -a 10 -l $SAMPLE_SIZE $SAMPLE_PATH/sample.tsv $SAMPLE_PATH/sample/part-
-}
-
-function convertAndUpload() {
-  for file in $SAMPLE_PATH/sample/part-*
-  do
-    cat $file | $CONVERTER $INDEX $TYPE | time curl -o /dev/null -s -XPOST $HOST/_bulk --data-binary @-
-  done
-  curl -s -o /dev/null -XPUT $HOST/$INDEX/_settings -d'{
-    "index" : {
-      "refresh_interval" : "1s"
-    }
-  }'
-  curl -o /dev/null -s -XPOST $HOST/$INDEX/_refresh
-  echo "       ----------         ---------         --------"
+function cleanup () {
+  curl -s -o /dev/null -XDELETE $HOST/$INDEX
 }
 
 reset
-makeSample
-splitSample
-convertAndUpload
+makeSample $SAMPLE_SIZE $SAMPLE_PATH/sample.tsv
+./upload.sh $INDEX $TYPE $SAMPLE_SIZE $SAMPLE_PATH/sample.tsv $SAMPLE_PATH/sample
+cleanup
+echo "       ----------         ---------         --------"
