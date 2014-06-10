@@ -14,9 +14,7 @@ generator:
 	gcc generate.c $(CFLAGS) -o $(GENERATOR_NAME)
 
 install: converter
-	cp $(CONVERTER_NAME) /opt/local/bin/$(CONVERTER_NAME)
-	mkdir /opt/local/lib/elasticsearch-tsv-converter
-	cp $(UPLOAD_SCRIPT_NAME) /opt/local/lib/elasticsearch-tsv-converter/$(UPLOAD_SCRIPT_NAME)
+	ln -sf $(CONVERTER_NAME) /opt/local/bin/$(CONVERTER_NAME)
 
 test: converter
 	./test.sh

@@ -25,7 +25,7 @@ To distribute a block of data across a cluster:
 
     $ ssh -A <main-database> -C '<sql command> > /var/tmp/dump.tsv'
     $ ssh -A <main-database> -C 'mkdir -p /var/tmp/dump-split; split -n <cluster-size> /var/tmp/dump.tsv /var/tmp/dump-split/part-'
-    $ ssh -A <main-database> -C 'for index in {1..8}; do rsync `find /var/tmp/dump-split/* | head -n${index} | tail -1` <user>@<cluster>${index}:/var/tmp/dump.tsv & done; wait'
+    $ ssh -A <main-database> -C 'for index in {1..8}; do rsync -arvce "ssh -o StrictHostKeyChecking=no" `find /var/tmp/dump-split/* | head -n${index} | tail -1` <user>@<cluster>${index}:/var/tmp/dump.tsv & done; wait'
     $ for index in {1..8}; do ssh <user>@<cluster>${index} -C '/opt/local/lib/elasticsearch-tsv-converter/upload.sh <elasticsearch-index> <elasticsearch-type> 100000 /var/tmp/dump.tsv /var/tmp/dump-split > /var/log/elasticsearch-tsv-converter.log &'; done
     $ for index in {1..8}; do ssh <user>@<cluster>${index} -C 'tail -f /var/log/elasticsearch-tsv-converter.log' &; done
 
