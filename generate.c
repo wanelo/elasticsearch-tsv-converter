@@ -12,6 +12,7 @@ void generateLine() {
 int main(int argc, char **argv) {
   unsigned long number;
   char *invalid = NULL;
+  unsigned long i;
 
   if (argc < 2) {
     fprintf(stderr, "Usage: %s <number-of-records>", argv[0]);
@@ -25,7 +26,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  for (int i = 0; i < number; i++) {
+  for (i = 0; i < number; i++) {
     generateLine();
   }
 

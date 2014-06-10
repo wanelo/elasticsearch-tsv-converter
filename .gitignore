@@ -26,3 +26,4 @@ elasticsearch-tsv-converter
 generate
 benchmark/
 generate-fake-data
+generate-raw-data
