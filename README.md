@@ -1,7 +1,15 @@
 elasticsearch-tsv-converter
 ===========================
 
-Converts from TSV to ElasticSearch's not-JSON Bulk API format
+Converts from TSV to ElasticSearch's not-JSON Bulk API format.
+
+The format of the TSV is assumed to be:
+
+    parentId userId collectionId timeStamp.timeStampMilliseconds
+
+The SQL command to extact these could be (for example):
+
+    psql -c "COPY (SELECT parent_id, user_id, collection_id, extract(epoch from date_trunc('milliseconds', created_at)) * 1000 FROM table_name)"
 
 ## Usage
 
